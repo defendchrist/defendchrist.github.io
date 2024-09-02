@@ -25,21 +25,53 @@
 <body>
   <!-- Add your site or application content here -->
   <div id="player">
-    <audio autoplay hidden>
-     <source src="music/Based.mp3" type="audio/mpeg">
-                If you're reading this, audio isn't supported. 
+    <audio id="audio-player" autoplay hidden>
+      <source src="music/Based.mp3" type="audio/mpeg">
+        If you're reading this, audio isn't supported. 
     </audio>
-</div>
+  </div>
+  
+  <script>
+    const audioPlayer = document.getElementById("audio-player");
+    audioPlayer.volume = 0.05;
+  
+    // Store the current playback time in localStorage
+    audioPlayer.addEventListener("timeupdate", () => {
+      localStorage.setItem("playbackTime", audioPlayer.currentTime);
+    });
+  
+    // Seek to the stored playback time when the page is reloaded
+    window.onload = () => {
+      const storedTime = localStorage.getItem("playbackTime");
+      if (storedTime) {
+        audioPlayer.currentTime = storedTime;
+      }
+    };
+  
+    // Loop the audio when it reaches the end
+    audioPlayer.addEventListener("ended", () => {
+      audioPlayer.currentTime = 0;
+      audioPlayer.play();
+    });
+  </script>
 
     
     
   <div class="grid"></div>
 <div class="content">
   <!-- your content here -->
-  ☦
-</div>
-  <p>☦ Defender Of Christ ☦</p>
-  <creed>I believe in one God, Father Almighty, Creator of heaven and earth, and of all things visible and invisible.
+<center>
+  <p id="DefenderOfChrist"></p>
+  <script>
+    fetch('./dist/ocean.html')
+      .then(response => response.text())
+      .then(html => {
+        const pugContent = document.getElementById('DefenderOfChrist');
+        pugContent.innerHTML = html;
+      });
+  </script>
+
+<NiceneCreed id="creed">I believe in one God, Father Almighty, Creator of heaven and earth, and of all things visible and invisible.
 
     And in one Lord Jesus Christ, the only-begotten Son of God, begotten of the Father before all ages; Light of Light, true God of true God, begotten, not created, of one essence with the Father through Whom all things were made. Who for us men and for our salvation came down from heaven and was incarnate of the Holy Spirit and the Virgin Mary and became man. He was crucified for us under Pontius Pilate, and suffered and was buried; And He rose on the third day, according to the Scriptures. He ascended into heaven and is seated at the right hand of the Father; And He will come again with glory to judge the living and dead. His kingdom shall have no end.
     
@@ -51,8 +83,10 @@
     
     I look for the resurrection of the dead, and the life of the age to come.
     
-    Amen.</creed>
+    Amen.</NiceneCreed>
+</center>
   <script src="js/app.js"></script>
+
 
 </body>
 

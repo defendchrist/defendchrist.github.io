@@ -10,67 +10,62 @@
 /* ==========================================================================
    Base styles: opinionated defaults
    ========================================================================== */
-   @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+// Please change your favorite font-size!
+$fontSize: 10rem;
 
-   *, *::before, *::after {
-     padding: 0;
-     margin: 0 auto;
-     box-sizing: border-box;
-   }
-   
-   body {
-     background-color: black;
-     height: 100vh;
-     display: grid;
-     grid-template-columns: repeat(15, 1fr);
-     grid-template-rows: repeat(15, 1fr);
-     overflow: hidden;
-   }
-   
-   .cell {
-     width: 100%;
-     height: 100%;
-     z-index: 2;
-   }
-   
-   .content {
-     --positionX: 7;
-     --positionY: 7;
-   
-     position: absolute;
-     top: 0; right: 0; bottom: 0; left: 0;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-   }
-   
-   .css {
-     font-family: 'Fredoka One', cursive;
-     position: absolute;
-     top: 50%; left: 50%;
-     animation: color 3s infinite linear;
-     text-shadow: 0 0 10px #000a;
-     transition: all 0.5s;
-   
-     @for $i from 0 to 10 {
-       &:nth-child(#{$i + 1}) {
-         font-size: #{100 + $i * 10}px;
-         animation-delay: #{$i * -0.3}s;
-         opacity: #{0.1 + $i * 0.1};
-         transform:
-           translateX(calc(-50% - (var(--positionX) - 7) * #{(7 - $i) * 3px}))
-           translateY(calc(-50% - (var(--positionY) - 7) * #{(7 - $i) * 3px}))
-           rotateX(calc(0deg - (var(--positionY) - 7) * 5deg))
-           rotateY(calc((var(--positionX) - 7) * 5deg));
-       }
-     }
-   
-     @keyframes color {
-       @for $c from 0 through 10 {
-         #{$c * 10%} { color: hsl(36 * $c, 75%, 75%); }
-       }
-     }
-   }
+
+
+body {
+  background: rgba(10, 20, 40, 1);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 500px;
+}
+
+div {
+  will-change: transform;
+}
+
+#ui {
+  transform-style: preserve-3d;
+  .text {
+    position: absolute;
+    font-size: $fontSize;
+    color: #fff;
+    line-height: $fontSize;
+    font-family: 'Anton', sans-serif;
+    padding: 20px 0;
+    mix-blend-mode: screen;
+    transform-style: preserve-3d;
+    @for $i from 1 through 26 {
+      $key: $i - 1;
+      $param: 5;
+      &:nth-child(#{$i}) {
+        clip-path: polygon(
+          -30% + ($key * $param) 0,
+          -20% + ($key * $param) 0,
+          20% + ($key * $param) 100%,
+          0% + ($key * $param) 100%
+        );
+        animation: wave 2000ms $key * 200 - 10000ms ease-in-out infinite alternate;
+      }
+    }
+  }
+}
+
+@keyframes wave {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9) rotateX(20deg) rotateY(20deg) rotateZ(0deg);
+    color: rgba(0, 30, 100, 1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.1) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    color: rgba(50, 230, 255, 1);
+  }
+}
    
 html {
   color: #222;
